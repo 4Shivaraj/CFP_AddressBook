@@ -1,0 +1,20 @@
+{
+  "home": {
+    "shivaraj": {
+      "sl_no": "01",
+      "full_name": "shivaraj gowda",
+      "address": "bangalore",
+      "phone_number": "86345678",
+      "email": "4shivaraj@gmail.com"
+    }
+  },
+  "freinds": {
+    "cheluvesha": {
+      "sl_no": "02",
+      "full_name": "cheluvesha b",
+      "address": "bangalore",
+      "phone_number": "9876545678",
+      "email": "cheluvesha.b@gmail.com"
+    }
+  }
+}
