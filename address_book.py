@@ -1,6 +1,8 @@
 from book_log import get_logger
+import json
+import csv
 
-lg = get_logger("(CrudOperations)", file_name="address_book_log.log")
+lg = get_logger("(CrudOperations_json_csv)", file_name="address_book_log.log")
 
 
 class Contact:
@@ -28,6 +30,14 @@ class Contact:
                    f'Phone Number: {self.phone_number}, Email: {self.email} '
         except Exception as e:
             lg.error(e)
+
+    def to_json(self):
+        return {"sl_no": self.sl_no, "full_name": self.full_name, "address": self.address,
+                "phone_number": self.phone_number, "email": self.email}
+
+    def to_csv(self):
+        return {"sl_no": self.sl_no, "full_name": self.full_name, "address": self.address,
+                "phone_number": self.phone_number, "email": self.email}
 
 
 class AddressBook:
@@ -106,6 +116,32 @@ class AddressBook:
                 return
             self.contact_dict.pop(key)
             lg.debug("contact deleted successfully")
+        except Exception as e:
+            lg.error(e)
+
+    def add_json_contact(self):
+        """
+        adding contacts to json dict
+        :return: json dictionary
+        """
+        try:
+            json_record_dict = {}
+            for key, value in self.contact_dict.items():
+                json_record_dict.update({key: value.to_json()})
+            return json_record_dict
+        except Exception as e:
+            lg.error(e)
+
+    def add_csv_contact(self):
+        """
+        adding contacts to csv dict
+        :return: csv dictionary
+        """
+        try:
+            csv_record_dict = {}
+            for key, value in self.contact_dict.items():
+                csv_record_dict.update({key: value.to_csv()})
+            return csv_record_dict
         except Exception as e:
             lg.error(e)
 
@@ -249,22 +285,86 @@ if __name__ == '__main__':
             lg.error(e)
 
 
+    def json_write_func():
+        """
+        Helper function to write json in to file
+        :return: None
+        """
+        try:
+            json_add_dict = {}
+            for name, obj in address_book_dict.items():
+                json_add_dict.update({name: obj.add_json_contact()})
+            with open("json_ab.json", "w") as file:
+                json.dump(json_add_dict, file, indent=2)
+                # file.close()
+        except Exception as e:
+            lg.error(e)
+
+
+    def json_read_func():
+        """
+        Helper function to read the json file
+        :return: None
+        """
+        try:
+            with open("json_ab.json", "r") as json_file:
+                data = json.loads(json_file.read())
+                lg.info(data)
+        except Exception as e:
+            lg.error(e)
+
+
+    def csv_write_fun():
+        """
+        Helper function to write the csv file
+        :return: None
+        """
+        try:
+            with open("csv_ab.csv", "w") as csv_file:
+                field_names = ["sl_no", "full_name", "address", "phone_number", "email"]
+                csv_writer = csv.DictWriter(csv_file, fieldnames=field_names)
+                csv_writer.writeheader()
+                for name, object in address_book_dict.items():
+                    contact_dict = object.add_csv_contact()
+                    for key, data in contact_dict.items():
+                        lg.info(data)
+                        csv_writer.writerow(data)
+                # csv_file.close()
+        except Exception as e:
+            lg.error(e)
+
+
+    def csv_read_func():
+        """
+        Helper function to read from csv file
+        :return:
+        """
+        try:
+            with open("csv_ab.csv", "r") as csv_file:
+                data = csv.reader(csv_file)
+                for line in data:
+                    lg.info(line)
+                # csv_file.close()
+        except Exception as e:
+            lg.error(e)
+
+
     def default():
         print("Invalid! Enter the correct choice")
 
 
     choice_dict = {1: add_addressbook, 2: display_addressbook, 3: add_contact_address_book, 4: get_contact_address_book,
-                   5: delete_contact_address_book, 6: display_contact_address_book, 7: update_contact_address_book}
+                   5: delete_contact_address_book, 6: display_contact_address_book, 7: update_contact_address_book,
+                   8: json_write_func, 9: json_read_func, 10: csv_write_fun, 11: csv_read_func}
 
     while True:
         print("Enter the choice: \n1.Add addressbook\n2.Display addressbook\n3.Add contacts\n4.Get contacts\n5.Delete "
-              "contacts\n6.Display contacts\n7.Update\n0.Exit")
+              "contacts\n6.Display contacts\n7.Update\n8.Json write\n9.Json read\n10.Csv write\n11.Csv read\n0.Exit")
         choice = int(input())
         if choice in choice_dict.keys():
             choice_dict.get(choice)()
         else:
             default()
-
 
 """
 Enter the choice: 
@@ -275,10 +375,15 @@ Enter the choice:
 5.Delete contacts
 6.Display contacts
 7.Update
+8.Json write
+9.Json read
+10.Csv write
+11.Csv read
 0.Exit
 1
 Enter the address book name:
 home
+(CrudOperations) - 2022-09-05 03:09:11,326 - INFO - home
 Enter the choice: 
 1.Add addressbook
 2.Display addressbook
@@ -287,8 +392,11 @@ Enter the choice:
 5.Delete contacts
 6.Display contacts
 7.Update
+8.Json write
+9.Json read
+10.Csv write
+11.Csv read
 0.Exit
-(CrudOperations) - 2022-09-04 22:46:50,151 - INFO - home
 2
 0 home
 Enter the choice: 
@@ -299,20 +407,24 @@ Enter the choice:
 5.Delete contacts
 6.Display contacts
 7.Update
+8.Json write
+9.Json read
+10.Csv write
+11.Csv read
 0.Exit
 3
 Enter the address book name:
 home
 Enter the sl_no:
-1
+01
 Enter the first name:
 shivaraj
 Enter the last name:
-gowda
+k
 Enter the address:
-basveshwar nagar
+bangalore
 Enter the phone number:
-8618199771
+9876543456
 Enter the email:
 4shivaraj.gowda@gmail.com
 Enter the choice: 
@@ -323,13 +435,14 @@ Enter the choice:
 5.Delete contacts
 6.Display contacts
 7.Update
+8.Json write
+9.Json read
+10.Csv write
+11.Csv read
 0.Exit
-4
+1
 Enter the address book name:
-home
-Enter the first name:
-shivaraj
-Sl.No: 1, Full Name: shivaraj gowda, Address: basveshwar nagar, Phone Number: 8618199771, Email: 4shivaraj.gowda@gmail.com 
+personal
 Enter the choice: 
 1.Add addressbook
 2.Display addressbook
@@ -338,11 +451,15 @@ Enter the choice:
 5.Delete contacts
 6.Display contacts
 7.Update
+8.Json write
+9.Json read
+10.Csv write
+11.Csv read
 0.Exit
-6
-Enter the address book name:
-home
-shivaraj Sl.No: 1, Full Name: shivaraj gowda, Address: basveshwar nagar, Phone Number: 8618199771, Email: 4shivaraj.gowda@gmail.com 
+(CrudOperations) - 2022-09-05 03:09:53,942 - INFO - personal
+2
+0 home
+1 personal
 Enter the choice: 
 1.Add addressbook
 2.Display addressbook
@@ -351,22 +468,26 @@ Enter the choice:
 5.Delete contacts
 6.Display contacts
 7.Update
+8.Json write
+9.Json read
+10.Csv write
+11.Csv read
 0.Exit
-7
+3
 Enter the address book name:
-home
-Enter the contact person name:
-shivaraj
+personal
 Enter the sl_no:
-02
+01
+Enter the first name:
+cheluvesha
 Enter the last name:
-k
+b
 Enter the address:
-vijay nagar
+bangalore
 Enter the phone number:
-861898765
+987653456
 Enter the email:
-4shivayash@gmail.com
+cheluvesha.b@gmail.com
 Enter the choice: 
 1.Add addressbook
 2.Display addressbook
@@ -375,9 +496,12 @@ Enter the choice:
 5.Delete contacts
 6.Display contacts
 7.Update
+8.Json write
+9.Json read
+10.Csv write
+11.Csv read
 0.Exit
-6
-Enter the address book name:
-home
-shivaraj Sl.No: 02, Full Name: shivaraj k, Address: vijay nagar, Phone Number: 861898765, Email: 4shivayash@gmail.com 
+10
+{'sl_no': '01', 'full_name': 'shivaraj k', 'address': 'bangalore', 'phone_number': '9876543456', 'email': '4shivaraj.gowda@gmail.com'}
+{'sl_no': '01', 'full_name': 'cheluvesha b', 'address': 'bangalore', 'phone_number': '987653456', 'email': 'cheluvesha.b@gmail.com'}
 """

@@ -1,2 +1,13 @@
 2022-09-04 22:45:29,725 (CrudOperations) INFO personal
 2022-09-04 22:46:50,151 (CrudOperations) INFO home
+
+
+2022-09-05 17:24:41,901 (CrudOperations_json_csv) INFO home
+2022-09-05 17:25:22,548 (CrudOperations_json_csv) INFO freinds
+2022-09-05 17:26:06,266 (CrudOperations_json_csv) INFO {'home': {'shivaraj': {'sl_no': '01', 'full_name': 'shivaraj gowda', 'address': 'bangalore', 'phone_number': '86345678', 'email': '4shivaraj@gmail.com'}}, 'freinds': {'cheluvesha': {'sl_no': '02', 'full_name': 'cheluvesha b', 'address': 'bangalore', 'phone_number': '9876545678', 'email': 'cheluvesha.b@gmail.com'}}}
+2022-09-05 17:26:09,543 (CrudOperations_json_csv) INFO {'sl_no': '01', 'full_name': 'shivaraj gowda', 'address': 'bangalore', 'phone_number': '86345678', 'email': '4shivaraj@gmail.com'}
+2022-09-05 17:26:09,543 (CrudOperations_json_csv) INFO {'sl_no': '02', 'full_name': 'cheluvesha b', 'address': 'bangalore', 'phone_number': '9876545678', 'email': 'cheluvesha.b@gmail.com'}
+2022-09-05 17:26:10,865 (CrudOperations_json_csv) INFO ['sl_no', 'full_name', 'address', 'phone_number', 'email']
+2022-09-05 17:26:10,866 (CrudOperations_json_csv) INFO ['01', 'shivaraj gowda', 'bangalore', '86345678', '4shivaraj@gmail.com']
+2022-09-05 17:26:10,866 (CrudOperations_json_csv) INFO ['02', 'cheluvesha b', 'bangalore', '9876545678', 'cheluvesha.b@gmail.com']
+
