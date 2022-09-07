@@ -45,6 +45,9 @@ class AddressBook:
         self.name = name
         self.contact_dict = {}
 
+    def __len__(self):
+        return len(self.contact_dict)
+
     def add_contact(self, contact_person_obj):
         """
         :param contact_person_obj: is the object of contact class
@@ -55,32 +58,31 @@ class AddressBook:
         except Exception as e:
             lg.error(e)
 
-    # def update_contact(self, sl_no, first_name, last_name, address, phone_number, email):
-    #     """
-    #     updating contacts
-    #     :param sl_no: user integer input
-    #     :param first_name: user string input
-    #     :param last_name: user string input
-    #     :param address: user string input
-    #     :param phone_number:user integer input
-    #     :param email: user string input
-    #     :return: None
-    #     """
-    #     try:
-    #         contact_person_name = input("Enter person name you want to update: ")
-    #         contact_exist = self.contact_dict.get(contact_person_name)
-    #         if not contact_exist:
-    #             lg.info("name not present")
-    #             return
-    #         contact_exist.sl_no = sl_no
-    #         contact_exist.first_name = first_name
-    #         contact_exist.last_name = last_name
-    #         contact_exist.address = address
-    #         contact_exist.phone_number = phone_number
-    #         contact_exist.email = email
-    #         lg.debug("updated successfully")
-    #     except Exception as e:
-    #         lg.error(e)
+    def update_contact(self, sl_no, first_name, last_name, address, phone_number, email):
+        """
+        updating contacts
+        :param sl_no: user integer input
+        :param first_name: user string input
+        :param last_name: user string input
+        :param address: user string input
+        :param phone_number:user integer input
+        :param email: user string input
+        :return: None
+        """
+        try:
+            contact_exist = self.get_contact(name=first_name)
+            if not contact_exist:
+                lg.info("name not present")
+                return
+            contact_exist.sl_no = sl_no
+            contact_exist.first_name = first_name
+            contact_exist.last_name = last_name
+            contact_exist.address = address
+            contact_exist.phone_number = phone_number
+            contact_exist.email = email
+            lg.debug("updated successfully")
+        except Exception as e:
+            lg.error(e)
 
     def get_contact(self, name):
         """
@@ -222,10 +224,10 @@ if __name__ == '__main__':
             address = input("Enter the address:\n")
             phone_number = input("Enter the phone number:\n")
             email = input("Enter the email:\n")
-            # address_book_object.update_contact(sl_no, first_name, last_name, address, phone_number, email)
-            contact = Contact(sl_no=sl_no, first_name=first_name, last_name=last_name, address=address,
-                              phone_number=phone_number, email=email)
-            address_book_object.add_contact(contact)
+            address_book_object.update_contact(sl_no, first_name, last_name, address, phone_number, email)
+            # contact = Contact(sl_no=sl_no, first_name=first_name, last_name=last_name, address=address,
+            #                   phone_number=phone_number, email=email)
+            # address_book_object.add_contact(contact)
         except Exception as e:
             lg.error(e)
 
